@@ -30,9 +30,15 @@ Pensando cómo la cajera ingresa a su Excel las ventas, la idea inicial sería:
 ## BE&DB
 ### Estructura de datos
 Las entidades podrían ser:
-- pago
-- medio de pago -> cosa de que al ser su propia tabla podamos ir agregando medios y no sea estático
+- pago -> `payment`
+- medio de pago -> `payment_method` - cosa de que al ser su propia tabla podamos ir agregando medios y no sea estático
+    - ¿los tipos de tarjeta deberían ir en una tabla aparte o no?
 - Es probable que tengamos que hacer una tabla para los billetes, sobre todo pensando en el peso que aparecen billetes nuevos cada cierto tiempo. De esa forma podríamos realizar el conteo de billetes.
+- cajerx -> `user`, puede ser types = ['admin', 'cashier']
+- caja (para tener preparado para cuando se tengan distintos puntos de venta) -> `cash_register`
+- sesión -> `cash_session` para contemplar el ciclo entre la apertura y el cierre de caja
+- `cash_count` -> donde se guarda lo contado real
+- `cash_closure` -> totales por sistema y totales reales, para llevar trazabilidad día a día
 
 ### ALTA de pago
 La interfaz sería algo así:
