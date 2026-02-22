@@ -108,7 +108,7 @@ function createHttpClient(options?: {
 }
 
 export const AxiosClient = createHttpClient({
-  baseURL: import.meta.env.VITE_BE_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: { Authorization: "Bearer ..." },
 });
 

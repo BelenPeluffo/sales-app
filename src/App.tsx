@@ -15,7 +15,7 @@ function App() {
   return (
     <>
       API dice: {message}
-      {import.meta.env.VITE_BE_URL}
+      {import.meta.env.VITE_API_URL}
     </>
   );
 }
