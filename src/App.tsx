@@ -1,9 +1,9 @@
-import { CierreSection } from "./modules/cierres";
+import { Header } from "./modules/common";
 
 function App() {
   return (
     <div className="App">
-      <CierreSection />
+      <Header />
     </div>
   );
 }

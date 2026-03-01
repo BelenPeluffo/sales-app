@@ -1,1 +1,1 @@
-export { CierreSection } from "./layouts";
+export { CierreSection } from "./components";
