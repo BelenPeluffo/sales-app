@@ -1,0 +1,1 @@
+export { CierreSection } from "./layouts";
