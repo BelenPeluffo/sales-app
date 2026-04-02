@@ -7,6 +7,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/modules/common/components/shadcn/dialog";
+import {
+  Field,
+  FieldGroup,
+  FieldLabel,
+} from "@/modules/common/components/shadcn/field";
+import { Input } from "@/modules/common/components/shadcn/input";
 
 const Login = () => {
   return (
@@ -22,14 +28,25 @@ const Login = () => {
           <DialogHeader>
             <DialogTitle>Iniciar sesión</DialogTitle>
           </DialogHeader>
-          Khe
+          <form action="">
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="username">User</FieldLabel>
+                <Input id="username" placeholder="Ingrese user" required />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="password">Contraseña</FieldLabel>
+                <Input id="password" placeholder="Ingrese su constraseña" type="password" required />
+              </Field>
+            </FieldGroup>
+          </form>
           <DialogFooter>
             <DialogClose asChild>
-              <button className="border-black border-1 rounded w-[25%] hover:cursor-pointer hover:bg-green-300">
+              <button className="!border-black border-1 rounded w-[25%] hover:cursor-pointer hover:bg-green-300">
                 Cancelar
               </button>
             </DialogClose>
-            <button className="border-black border-1 rounded w-[25%] hover:cursor-pointer bg-green-300 hover:shadow-[0_0_30px_rgb(134,239,172,0.6)]">
+            <button className="border-black border-1 rounded w-[25%] hover:cursor-pointer bg-green-300 hover:ring-2 hover:ring-green-300">
               Ingresar
             </button>
           </DialogFooter>
