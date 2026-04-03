@@ -5,7 +5,7 @@ import { ABIERTO } from "./modules/cierres/hooks/cierre-store";
 function App() {
   const { state: cierreState } = useCierreStore();
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen p-2">
       {cierreState === ABIERTO ? <Session /> : <Login />}
     </div>
   );
