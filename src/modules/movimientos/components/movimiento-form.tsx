@@ -8,6 +8,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { paymentsSchema, type Payment } from "../types";
 import PaymentItem from "./payment-item";
+import { Separator } from "@/modules/common/components/shadcn/separator";
 
 const MovimientoForm = () => {
   const { control } = useForm<{
@@ -43,12 +44,13 @@ const MovimientoForm = () => {
                   control={control}
                   key={payment.id}
                 />
+                <Separator />
               </>
             );
           })}
           <button
             className="hover:text-green-300 hover:decoration-green-300 hover:cursor-pointer hover:underline"
-            onClick={() => append({ method: 1, amount: 0 })}
+            onClick={() => append({ method: undefined, amount: 0 })}
             type="button"
           >
             + Agregar método de pago

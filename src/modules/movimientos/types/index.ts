@@ -1,1 +1,1 @@
-export { paymentItemSchema, paymentsSchema, type Payment } from "./payments-schema";
+export { paymentItemSchema, paymentsSchema, type Payment, type PaymentPartial } from "./payments-schema";
