@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/modules/common/components/shadcn/table";
 import Header from "./header";
+import { CreateMovimientoButton } from "@/modules/movimientos";
 
 const MOCK_MOVIMIENTOS = [
   {
@@ -26,9 +27,7 @@ const Session = () => {
       <div className="flex flex-row flex-wrap justify-between mt-6 mb-3 w-full content-center">
         <p className="font-medium text-xl w-[25%]">Transacciones del día</p>
         <div className="flex gap-1 w-fit flex-wrap content-center">
-          <button className="border-black border-1 h-fit px-1 rounded hover:cursor-pointer bg-green-300 hover:ring-2 hover:ring-green-300">
-            Ingresar movimiento
-          </button>
+          <CreateMovimientoButton />
           <button className="!border-black border-1 h-fit px-1 rounded hover:cursor-pointer hover:bg-green-300">
             Ir a resumen
           </button>
