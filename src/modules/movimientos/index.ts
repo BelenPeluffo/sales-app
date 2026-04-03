@@ -1,1 +1,1 @@
-export { CreateMovimientoButton } from "./components";
+export { CreateMovimientoButton, MovimientoForm } from "./components";

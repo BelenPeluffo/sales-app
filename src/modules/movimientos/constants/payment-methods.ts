@@ -1,0 +1,7 @@
+export enum PAYMENT_METHODS {
+  VISA_ELECTRON = 1,
+  MAESTRO = 2,
+  DOLLARS = 3,
+  REAIS = 4,
+  PESOS_AR = 5,
+}
