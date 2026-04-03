@@ -16,6 +16,7 @@ import {
 } from "react-hook-form";
 import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import type { Payment } from "../types/payment";
+import { Input } from "@/modules/common/components/shadcn/input";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -51,24 +52,17 @@ const PaymentItem = ({
     control,
     name: `payments.${index}.method`,
   });
-  {
-    JSON.stringify(paymentType);
-  }
 
-  console.log("item", item);
   return (
     <>
       <Controller
         name={`payments.${index}.method`}
         control={control}
         render={({ field }) => {
-          console.log("FIELD > value", field.value);
-          console.log("FIELD > name", field.name);
           return (
             <Field>
               <FieldLabel>Método de pago</FieldLabel>
               <Select
-                // {...field}
                 name={field.name}
                 value={field.value?.toString()}
                 key={item.id}
@@ -91,6 +85,23 @@ const PaymentItem = ({
                   </SelectGroup>
                 </SelectContent>
               </Select>
+            </Field>
+          );
+        }}
+      />
+      <Controller
+        name={`payments.${index}.amount`}
+        control={control}
+        render={({ field }) => {
+          return (
+            <Field>
+              <FieldLabel>Método de pago</FieldLabel>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2">
+                  $
+                </span>
+                <Input type="number" className="pl-7" {...field} />
+              </div>
             </Field>
           );
         }}
