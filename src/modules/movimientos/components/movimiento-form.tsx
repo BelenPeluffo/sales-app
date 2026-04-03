@@ -22,7 +22,7 @@ const MovimientoForm = () => {
   const {
     fields: payments,
     append,
-    // remove,
+    remove,
   } = useFieldArray({
     control,
     name: "payments",
@@ -43,6 +43,7 @@ const MovimientoForm = () => {
                   index={index}
                   control={control}
                   key={payment.id}
+                  onRemove={remove}
                 />
                 <Separator />
               </>

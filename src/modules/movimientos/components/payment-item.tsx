@@ -17,6 +17,7 @@ import {
 import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
 import type { Payment } from "../types";
+import { Trash2 } from "lucide-react";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -37,6 +38,7 @@ const PaymentItem = ({
   item,
   index,
   control,
+  onRemove,
 }: {
   item: FieldArrayWithId<
     {
@@ -47,6 +49,7 @@ const PaymentItem = ({
   >;
   index: number;
   control: Control<{ payments: Array<Payment> }>;
+  onRemove: (index: number) => void;
 }) => {
   const paymentType = useWatch({
     control,
@@ -55,57 +58,67 @@ const PaymentItem = ({
 
   return (
     <>
-      <Controller
-        name={`payments.${index}.method`}
-        control={control}
-        render={({ field }) => {
-          return (
-            <Field>
-              <FieldLabel>Método de pago</FieldLabel>
-              <Select
-                name={field.name}
-                value={field.value?.toString()}
-                key={item.id}
-                onValueChange={(value) => field.onChange(Number(value))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Seleccione método de pago" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Método de pago</SelectLabel>
-                    {paymentMethods.map((method) => (
-                      <SelectItem
-                        value={method.value?.toString()}
-                        key={method.value}
-                      >
-                        {method.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </Field>
-          );
-        }}
-      />
-      <Controller
-        name={`payments.${index}.amount`}
-        control={control}
-        render={({ field }) => {
-          return (
-            <Field>
-              <FieldLabel>Monto</FieldLabel>
-              <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2">
-                  $
-                </span>
-                <Input type="number" className="pl-7" {...field} />
-              </div>
-            </Field>
-          );
-        }}
-      />
+      <div className="flex flex-row gap-2">
+        <Controller
+          name={`payments.${index}.method`}
+          control={control}
+          render={({ field }) => {
+            return (
+              <Field>
+                <FieldLabel>Método de pago</FieldLabel>
+                <Select
+                  name={field.name}
+                  value={field.value?.toString()}
+                  key={item.id}
+                  onValueChange={(value) => field.onChange(Number(value))}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Seleccione método de pago" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Método de pago</SelectLabel>
+                      {paymentMethods.map((method) => (
+                        <SelectItem
+                          value={method.value?.toString()}
+                          key={method.value}
+                        >
+                          {method.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
+            );
+          }}
+        />
+        <Controller
+          name={`payments.${index}.amount`}
+          control={control}
+          render={({ field }) => {
+            return (
+              <Field>
+                <FieldLabel>Monto</FieldLabel>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2">
+                    $
+                  </span>
+                  <Input type="number" className="pl-7" {...field} />
+                </div>
+              </Field>
+            );
+          }}
+        />
+        {index > 0 ? (
+          <button
+            className="text-green-300 hover:cursor-pointer hover:text-red-400"
+            onClick={() => onRemove(index)}
+          >
+            <Trash2 className="justify-center" size={25} />
+          </button>
+        ) : null}
+      </div>
       {paymentType === PAYMENT_METHODS.PESOS_AR ? (
         <Controller
           name={`payments.${index}.transactionType`}
