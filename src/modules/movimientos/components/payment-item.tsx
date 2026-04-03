@@ -15,8 +15,8 @@ import {
   type FieldArrayWithId,
 } from "react-hook-form";
 import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
-import type { Payment } from "../types/payment";
 import { Input } from "@/modules/common/components/shadcn/input";
+import type { Payment } from "../types";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -95,7 +95,7 @@ const PaymentItem = ({
         render={({ field }) => {
           return (
             <Field>
-              <FieldLabel>Método de pago</FieldLabel>
+              <FieldLabel>Monto</FieldLabel>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2">
                   $

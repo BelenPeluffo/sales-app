@@ -5,7 +5,8 @@ import {
 } from "@/modules/common/components/shadcn/dialog";
 import { FieldGroup } from "@/modules/common/components/shadcn/field";
 import { useFieldArray, useForm } from "react-hook-form";
-import type { Payment } from "../types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { paymentsSchema, type Payment } from "../types";
 import PaymentItem from "./payment-item";
 
 const MovimientoForm = () => {
@@ -13,12 +14,13 @@ const MovimientoForm = () => {
     payments: Array<Payment>;
   }>({
     defaultValues: {
-      payments: [{ method: null, amount: 0 }],
+      payments: [{ method: undefined, amount: 0 }],
     },
+    resolver: zodResolver(paymentsSchema),
   });
   const {
     fields: payments,
-    // append,
+    append,
     // remove,
   } = useFieldArray({
     control,
@@ -34,14 +36,23 @@ const MovimientoForm = () => {
         <FieldGroup>
           {payments.map((payment, index) => {
             return (
-              <PaymentItem
-                item={payment}
-                index={index}
-                control={control}
-                key={payment.id}
-              />
+              <>
+                <PaymentItem
+                  item={payment}
+                  index={index}
+                  control={control}
+                  key={payment.id}
+                />
+              </>
             );
           })}
+          <button
+            className="hover:text-green-300 hover:decoration-green-300 hover:cursor-pointer hover:underline"
+            onClick={() => append({ method: 1, amount: 0 })}
+            type="button"
+          >
+            + Agregar método de pago
+          </button>
         </FieldGroup>
       </form>
       <DialogFooter></DialogFooter>
