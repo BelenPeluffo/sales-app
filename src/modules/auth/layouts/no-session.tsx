@@ -27,7 +27,12 @@ const NoSession = () => {
   };
 
   const initSession = () => {
-    abrirCierre();
+    // TODO: usar react-query para obtener los valores definidos en el formulario
+    abrirCierre({
+      initialAmount: 3000,
+      dolarExchangeRate: 1500,
+      reaisExchangeRate: 500,
+    });
     setOpenDialog(false);
   };
 

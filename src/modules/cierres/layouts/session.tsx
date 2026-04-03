@@ -1,7 +1,11 @@
+import Header from "./header";
+
 const Session = () => {
   return (
-    <div>Session</div>
-  )
-}
+    <div className="w-full">
+      <Header />
+    </div>
+  );
+};
 
-export default Session
+export default Session;
