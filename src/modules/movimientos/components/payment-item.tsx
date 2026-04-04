@@ -1,4 +1,8 @@
-import { Field, FieldLabel } from "@/modules/common/components/shadcn/field";
+import {
+  Field,
+  FieldError,
+  FieldLabel,
+} from "@/modules/common/components/shadcn/field";
 import {
   Select,
   SelectContent,
@@ -17,6 +21,14 @@ import {
 import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
 import type { Payment } from "../types";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/modules/common/components/shadcn/table";
 // import { Trash2 } from "lucide-react";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
@@ -26,12 +38,20 @@ import type { Payment } from "../types";
 - ¿O recurriendo a los strings?
 Quizás guardarlos en store en caso de que se necesite saber su valor en más de un lugar.
 */
-const paymentMethods = [
+const MOCK_PAYMENT_METHODS = [
   { name: "Visa electrón", value: PAYMENT_METHODS.VISA_ELECTRON },
   { name: "Maestro", value: PAYMENT_METHODS.MAESTRO },
   { name: "US$ Dólares", value: PAYMENT_METHODS.DOLLARS },
   { name: "R Reales", value: PAYMENT_METHODS.REAIS },
   { name: "AR$ Pesos Argentinos", value: PAYMENT_METHODS.PESOS_AR },
+];
+
+const MOCK_DENOMINACION_PESOS_AR = [100, 200, 500, 1000, 5000, 10000, 20000];
+
+const CASH_METHODS = [
+  PAYMENT_METHODS.DOLLARS,
+  PAYMENT_METHODS.PESOS_AR,
+  PAYMENT_METHODS.REAIS,
 ];
 
 const PaymentItem = ({
@@ -55,20 +75,21 @@ const PaymentItem = ({
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <div className="flex flex-row gap-2 w-full">
         <Controller
           name={`payments.${index}.method`}
           control={control}
-          render={({ field }) => {
+          render={({ field, fieldState }) => {
             return (
-              <Field className="w-[60%]">
+              <Field className="w-[60%]" data-invalid={fieldState.invalid}>
                 <FieldLabel>Método de pago</FieldLabel>
                 <Select
                   name={field.name}
                   value={field.value?.toString()}
                   key={item.id}
                   onValueChange={(value) => field.onChange(Number(value))}
+                  aria-invalid={fieldState.invalid}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione método de pago" />
@@ -76,7 +97,7 @@ const PaymentItem = ({
                   <SelectContent>
                     <SelectGroup>
                       <SelectLabel>Método de pago</SelectLabel>
-                      {paymentMethods.map((method) => (
+                      {MOCK_PAYMENT_METHODS.map((method) => (
                         <SelectItem
                           value={method.value?.toString()}
                           key={method.value}
@@ -87,6 +108,9 @@ const PaymentItem = ({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {fieldState.invalid ? (
+                  <FieldError errors={[fieldState.error]} className="text-end" />
+                ) : null}
               </Field>
             );
           }}
@@ -94,16 +118,25 @@ const PaymentItem = ({
         <Controller
           name={`payments.${index}.amount`}
           control={control}
-          render={({ field }) => {
+          render={({ field, fieldState }) => {
             return (
-              <Field className="w-[40%]">
+              <Field className="w-[40%]" data-invalid={fieldState.invalid}>
                 <FieldLabel>Monto</FieldLabel>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2">
                     $
                   </span>
-                  <Input type="number" className="pl-7" {...field} />
+                  <Input
+                    type="number"
+                    className="pl-7"
+                    {...field}
+                    disabled={paymentType && CASH_METHODS.includes(paymentType)}
+                    aria-invalid={fieldState.invalid}
+                  />
                 </div>
+                {fieldState.invalid ? (
+                  <FieldError errors={[fieldState.error]} className="text-end" />
+                ) : null}
               </Field>
             );
           }}
@@ -113,15 +146,16 @@ const PaymentItem = ({
         <Controller
           name={`payments.${index}.transactionType`}
           control={control}
-          render={({ field }) => {
+          render={({ field, fieldState }) => {
             return (
-              <Field className="w-[89%]">
+              <Field data-invalid={fieldState.invalid}>
                 <FieldLabel>Tipo de transacción</FieldLabel>
                 <Select
                   name={field.name}
                   value={field.value?.toString()}
                   key={item.id}
                   onValueChange={(value) => field.onChange(Number(value))}
+                  aria-invalid={fieldState.invalid}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione tipo de transacción" />
@@ -138,12 +172,37 @@ const PaymentItem = ({
                     </SelectGroup>
                   </SelectContent>
                 </Select>
+                {fieldState.invalid ? (
+                  <FieldError errors={[fieldState.error]} className="text-end" />
+                ) : null}
               </Field>
             );
           }}
         />
       ) : null}
-    </>
+      {paymentType === PAYMENT_METHODS.PESOS_AR ? (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Denominación</TableHead>
+              <TableHead>Cantidad</TableHead>
+              <TableHead>Subtotal</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {MOCK_DENOMINACION_PESOS_AR.map((denominacion) => (
+              <TableRow>
+                <TableCell>AR$ {denominacion}</TableCell>
+                <TableCell>
+                  <Input type="number" />
+                </TableCell>
+                <TableCell>AR$</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : null}
+    </div>
   );
 };
 

@@ -12,7 +12,7 @@ import { Separator } from "@/modules/common/components/shadcn/separator";
 import { Trash2 } from "lucide-react";
 
 const MovimientoForm = () => {
-  const { control } = useForm<{
+  const { control, trigger, formState } = useForm<{
     payments: Array<Payment>;
   }>({
     defaultValues: {
@@ -28,6 +28,11 @@ const MovimientoForm = () => {
     control,
     name: "payments",
   });
+
+  const appendItem = () => {
+    trigger();
+    if (!formState.errors) append({ method: undefined, amount: 0 });
+  };
 
   return (
     <>
@@ -63,7 +68,7 @@ const MovimientoForm = () => {
           })}
           <button
             className="hover:text-green-300 hover:decoration-green-300 hover:cursor-pointer hover:underline"
-            onClick={() => append({ method: undefined, amount: 0 })}
+            onClick={appendItem}
             type="button"
           >
             + Agregar método de pago
