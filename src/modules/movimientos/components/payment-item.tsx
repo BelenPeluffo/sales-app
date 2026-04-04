@@ -85,13 +85,12 @@ const PaymentItem = ({
               <Field className="w-[60%]" data-invalid={fieldState.invalid}>
                 <FieldLabel>Método de pago</FieldLabel>
                 <Select
-                  name={field.name}
+                  {...field}
                   value={field.value?.toString()}
                   key={item.id}
                   onValueChange={(value) => field.onChange(Number(value))}
-                  aria-invalid={fieldState.invalid}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Seleccione método de pago" />
                   </SelectTrigger>
                   <SelectContent>
@@ -109,7 +108,10 @@ const PaymentItem = ({
                   </SelectContent>
                 </Select>
                 {fieldState.invalid ? (
-                  <FieldError errors={[fieldState.error]} className="text-end" />
+                  <FieldError
+                    errors={[fieldState.error]}
+                    className="text-end"
+                  />
                 ) : null}
               </Field>
             );
@@ -130,12 +132,18 @@ const PaymentItem = ({
                     type="number"
                     className="pl-7"
                     {...field}
+                    onChange={(event) =>
+                      field.onChange(Number(event.target.value))
+                    }
                     disabled={paymentType && CASH_METHODS.includes(paymentType)}
                     aria-invalid={fieldState.invalid}
                   />
                 </div>
                 {fieldState.invalid ? (
-                  <FieldError errors={[fieldState.error]} className="text-end" />
+                  <FieldError
+                    errors={[fieldState.error]}
+                    className="text-end"
+                  />
                 ) : null}
               </Field>
             );
@@ -173,7 +181,10 @@ const PaymentItem = ({
                   </SelectContent>
                 </Select>
                 {fieldState.invalid ? (
-                  <FieldError errors={[fieldState.error]} className="text-end" />
+                  <FieldError
+                    errors={[fieldState.error]}
+                    className="text-end"
+                  />
                 ) : null}
               </Field>
             );

@@ -19,6 +19,7 @@ const MovimientoForm = () => {
       payments: [{ method: undefined, amount: 0 }],
     },
     resolver: zodResolver(paymentsSchema),
+    mode: "onChange",
   });
   const {
     fields: payments,
@@ -31,7 +32,8 @@ const MovimientoForm = () => {
 
   const appendItem = () => {
     trigger();
-    if (!formState.errors) append({ method: undefined, amount: 0 });
+    console.log("formState.errors", formState.errors);
+    if (!formState.errors.payments) append({ method: undefined, amount: 0 });
   };
 
   return (

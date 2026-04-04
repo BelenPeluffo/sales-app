@@ -12,6 +12,7 @@ export const paymentItemSchema = zod
     transactionType: zod.enum(TRANSACTION_TYPES).optional(),
     amount: zod
       .number()
+      .transform((value) => (value ? Number(value) : 0))
       .nonoptional()
       .refine((value) => value > 0, { message: "Campo requerido" }),
   })
@@ -20,11 +21,10 @@ export const paymentItemSchema = zod
       formValues.method === PAYMENT_METHODS.PESOS_AR &&
       !formValues.transactionType
     ) {
-      console.log('this is it, bitch');
       context.addIssue({
         code: zod.ZodIssueCode.custom,
         message: "Campo requerido",
-        path: ["transactionType"]
+        path: ["transactionType"],
       });
     }
   });
