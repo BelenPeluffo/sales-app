@@ -1,2 +1,2 @@
-export { Login, NoSession } from "./layouts";
+export { LoginButton, NewSessionButton } from "./components";
 export { useUserStore } from "./hooks";

@@ -1,12 +1,10 @@
-import { Login } from "./modules/auth";
-import { Session, useCierreStore } from "./modules/cierres";
-import { ABIERTO } from "./modules/cierres/hooks/cierre-store";
+import { AppRouter } from "./modules/common/routes";
 
 function App() {
-  const { state: cierreState } = useCierreStore();
   return (
     <div className="w-screen h-screen p-2">
-      {cierreState === ABIERTO ? <Session /> : <Login />}
+      {/* {cierreState === ABIERTO ? <Session /> : <Login />} */}
+      <AppRouter />
     </div>
   );
 }
