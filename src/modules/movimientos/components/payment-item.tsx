@@ -135,6 +135,7 @@ const PaymentItem = ({
                     onChange={(event) =>
                       field.onChange(Number(event.target.value))
                     }
+                    min={0}
                     disabled={paymentType && CASH_METHODS.includes(paymentType)}
                     aria-invalid={fieldState.invalid}
                   />
@@ -205,7 +206,7 @@ const PaymentItem = ({
               <TableRow>
                 <TableCell>AR$ {denominacion}</TableCell>
                 <TableCell>
-                  <Input type="number" />
+                  <Input type="number" min={0} />
                 </TableCell>
                 <TableCell>AR$</TableCell>
               </TableRow>

@@ -61,7 +61,7 @@ const NoSession = () => {
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="monto-inicial">Monto inicial</FieldLabel>
-                <Input id="monto-inicial" type="number" required />
+                <Input id="monto-inicial" type="number" min={0} required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="us-dollars">Cotización Dolares</FieldLabel>

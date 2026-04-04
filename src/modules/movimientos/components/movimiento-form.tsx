@@ -77,7 +77,14 @@ const MovimientoForm = () => {
           </button>
         </FieldGroup>
       </form>
-      <DialogFooter></DialogFooter>
+      <DialogFooter>
+        <button className="!border-black border-1 rounded w-[25%] hover:cursor-pointer hover:bg-green-300">
+          Cancelar
+        </button>
+        <button className="border-black border-1 rounded w-[25%] hover:cursor-pointer bg-green-300 hover:ring-2 hover:ring-green-300">
+          Guardar
+        </button>
+      </DialogFooter>
     </>
   );
 };
