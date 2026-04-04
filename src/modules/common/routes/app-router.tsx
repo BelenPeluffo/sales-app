@@ -3,6 +3,8 @@ import { Session } from "@/modules/cierres";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import PrivateRoute from "./private-route";
 import NoSession from "@/modules/auth/layouts/no-session";
+import { SessionLayout } from "../layouts";
+import { CreateMovimiento } from "@/modules/movimientos";
 
 const AppRouter = () => {
   return (
@@ -20,22 +22,24 @@ const AppRouter = () => {
             }
           />
         </Route>
-        <Route
-          path="/session"
-          element={
-            <PrivateRoute>
-              <Session />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/create-movimiento"
-          element={
-            <PrivateRoute>
-              <Session />
-            </PrivateRoute>
-          }
-        />
+        <Route element={<SessionLayout />}>
+          <Route
+            path="/session"
+            element={
+              <PrivateRoute>
+                <Session />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/create-movimiento"
+            element={
+              <PrivateRoute>
+                <CreateMovimiento />
+              </PrivateRoute>
+            }
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

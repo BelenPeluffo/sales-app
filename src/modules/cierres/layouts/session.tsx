@@ -6,7 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/modules/common/components/shadcn/table";
-import Header from "./header";
 import { CreateMovimientoButton } from "@/modules/movimientos";
 
 const MOCK_MOVIMIENTOS = [
@@ -22,8 +21,7 @@ const MOCK_MOVIMIENTOS = [
 
 const Session = () => {
   return (
-    <div className="w-full">
-      <Header />
+    <>
       <div className="flex flex-row flex-wrap justify-between mt-6 mb-3 w-full content-center">
         <p className="font-medium text-xl w-[25%]">Transacciones del día</p>
         <div className="flex gap-1 w-fit flex-wrap content-center">
@@ -43,18 +41,18 @@ const Session = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-            {MOCK_MOVIMIENTOS.map((movimiento) => {
-                return (
-                    <TableRow>
-                        <TableCell>{movimiento.time}</TableCell>
-                        <TableCell>ARS $ {movimiento.total}</TableCell>
-                        <TableCell>Acciones</TableCell>
-                    </TableRow>
-                )
-            })}
+          {MOCK_MOVIMIENTOS.map((movimiento) => {
+            return (
+              <TableRow>
+                <TableCell>{movimiento.time}</TableCell>
+                <TableCell>ARS $ {movimiento.total}</TableCell>
+                <TableCell>Acciones</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
-    </div>
+    </>
   );
 };
 
