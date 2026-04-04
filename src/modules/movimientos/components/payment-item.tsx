@@ -12,24 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/shadcn/select";
-import {
-  Controller,
-  useWatch,
-  type Control,
-  type FieldArrayWithId,
-} from "react-hook-form";
-import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { CASH_METHODS, PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
-import type { Payment } from "../types";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/modules/common/components/shadcn/table";
-// import { Trash2 } from "lucide-react";
+import CashBreakdownTable from "./cash-breakdown-table";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -46,29 +32,14 @@ const MOCK_PAYMENT_METHODS = [
   { name: "AR$ Pesos Argentinos", value: PAYMENT_METHODS.PESOS_AR },
 ];
 
-const MOCK_DENOMINACION_PESOS_AR = [100, 200, 500, 1000, 5000, 10000, 20000];
-
-const CASH_METHODS = [
-  PAYMENT_METHODS.DOLLARS,
-  PAYMENT_METHODS.PESOS_AR,
-  PAYMENT_METHODS.REAIS,
-];
-
 const PaymentItem = ({
   item,
   index,
-  control,
 }: {
-  item: FieldArrayWithId<
-    {
-      payments: Array<Payment>;
-    },
-    "payments",
-    "id"
-  >;
+  item: Record<"id", string>;
   index: number;
-  control: Control<{ payments: Array<Payment> }>;
 }) => {
+  const { control } = useFormContext();
   const paymentType = useWatch({
     control,
     name: `payments.${index}.method`,
@@ -164,9 +135,8 @@ const PaymentItem = ({
                   value={field.value?.toString()}
                   key={item.id}
                   onValueChange={(value) => field.onChange(Number(value))}
-                  aria-invalid={fieldState.invalid}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger aria-invalid={fieldState.invalid}>
                     <SelectValue placeholder="Seleccione tipo de transacción" />
                   </SelectTrigger>
                   <SelectContent>
@@ -193,26 +163,7 @@ const PaymentItem = ({
         />
       ) : null}
       {paymentType === PAYMENT_METHODS.PESOS_AR ? (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Denominación</TableHead>
-              <TableHead>Cantidad</TableHead>
-              <TableHead>Subtotal</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {MOCK_DENOMINACION_PESOS_AR.map((denominacion) => (
-              <TableRow>
-                <TableCell>AR$ {denominacion}</TableCell>
-                <TableCell>
-                  <Input type="number" min={0} />
-                </TableCell>
-                <TableCell>AR$</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        <CashBreakdownTable index={index} />
       ) : null}
     </div>
   );
