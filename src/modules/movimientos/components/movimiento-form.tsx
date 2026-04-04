@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { paymentsSchema, type Payment } from "../types";
 import PaymentItem from "./payment-item";
 import { Separator } from "@/modules/common/components/shadcn/separator";
+import { Trash2 } from "lucide-react";
 
 const MovimientoForm = () => {
   const { control } = useForm<{
@@ -38,13 +39,24 @@ const MovimientoForm = () => {
           {payments.map((payment, index) => {
             return (
               <>
-                <PaymentItem
-                  item={payment}
-                  index={index}
-                  control={control}
-                  key={payment.id}
-                  onRemove={remove}
-                />
+                <div className="flex flex-row gap-2">
+                  <PaymentItem
+                    item={payment}
+                    index={index}
+                    control={control}
+                    key={payment.id}
+                  />
+                  {payments.length > 1 ? (
+                    <button
+                      className="text-green-300 hover:cursor-pointer hover:text-red-400 w-[10%]"
+                      onClick={() => remove(index)}
+                    >
+                      <Trash2 className="justify-center" size={25} />
+                    </button>
+                  ) : (
+                    <div className="w-[10%]"></div>
+                  )}
+                </div>
                 <Separator />
               </>
             );

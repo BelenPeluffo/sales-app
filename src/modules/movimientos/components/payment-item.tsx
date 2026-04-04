@@ -17,7 +17,7 @@ import {
 import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
 import type { Payment } from "../types";
-import { Trash2 } from "lucide-react";
+// import { Trash2 } from "lucide-react";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -38,7 +38,6 @@ const PaymentItem = ({
   item,
   index,
   control,
-  onRemove,
 }: {
   item: FieldArrayWithId<
     {
@@ -49,7 +48,6 @@ const PaymentItem = ({
   >;
   index: number;
   control: Control<{ payments: Array<Payment> }>;
-  onRemove: (index: number) => void;
 }) => {
   const paymentType = useWatch({
     control,
@@ -58,13 +56,13 @@ const PaymentItem = ({
 
   return (
     <>
-      <div className="flex flex-row gap-2">
+      <div className="flex flex-row gap-2 w-full">
         <Controller
           name={`payments.${index}.method`}
           control={control}
           render={({ field }) => {
             return (
-              <Field>
+              <Field className="w-[60%]">
                 <FieldLabel>Método de pago</FieldLabel>
                 <Select
                   name={field.name}
@@ -98,7 +96,7 @@ const PaymentItem = ({
           control={control}
           render={({ field }) => {
             return (
-              <Field>
+              <Field className="w-[40%]">
                 <FieldLabel>Monto</FieldLabel>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2">
@@ -110,14 +108,6 @@ const PaymentItem = ({
             );
           }}
         />
-        {index > 0 ? (
-          <button
-            className="text-green-300 hover:cursor-pointer hover:text-red-400"
-            onClick={() => onRemove(index)}
-          >
-            <Trash2 className="justify-center" size={25} />
-          </button>
-        ) : null}
       </div>
       {paymentType === PAYMENT_METHODS.PESOS_AR ? (
         <Controller
@@ -125,7 +115,7 @@ const PaymentItem = ({
           control={control}
           render={({ field }) => {
             return (
-              <Field>
+              <Field className="w-[89%]">
                 <FieldLabel>Tipo de transacción</FieldLabel>
                 <Select
                   name={field.name}
