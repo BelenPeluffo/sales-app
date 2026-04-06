@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from "react-hook-form";
 import PaymentItem from "./payment-item";
 import { Separator } from "@/modules/common/components/shadcn/separator";
 import { Trash2 } from "lucide-react";
+import { Fragment } from "react/jsx-runtime";
 
 const MovimientoForm = () => {
   const { control } = useFormContext();
@@ -30,7 +31,7 @@ const MovimientoForm = () => {
         <FieldGroup>
           {payments.map((payment, index) => {
             return (
-              <>
+              <Fragment key={index}>
                 <div className="flex flex-row gap-2">
                   <PaymentItem item={payment} index={index} key={payment.id} />
                   {payments.length > 1 ? (
@@ -45,7 +46,7 @@ const MovimientoForm = () => {
                   )}
                 </div>
                 <Separator />
-              </>
+              </Fragment>
             );
           })}
           <button

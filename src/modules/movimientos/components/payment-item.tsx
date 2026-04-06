@@ -49,7 +49,7 @@ const PaymentItem = ({
   return (
     <div
       className="flex flex-col gap-2"
-      onClick={() => {
+      onClickCapture={() => {
         selectItem(index);
       }}
     >
@@ -67,7 +67,10 @@ const PaymentItem = ({
                   key={item.id}
                   onValueChange={(value) => field.onChange(Number(value))}
                 >
-                  <SelectTrigger aria-invalid={fieldState.invalid}>
+                  <SelectTrigger
+                    aria-invalid={fieldState.invalid}
+                    onPointerDownCapture={() => selectItem(index)}
+                  >
                     <SelectValue placeholder="Seleccione método de pago" />
                   </SelectTrigger>
                   <SelectContent>

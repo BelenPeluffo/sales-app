@@ -4,9 +4,11 @@ import { FormProvider, useForm } from "react-hook-form";
 import { paymentsSchema, type Payment } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CreateMovimientoDisplay from "./create-movimiento-display";
+import { usePaymentItemStore } from "../stores";
 
 const CreateMovimiento = () => {
   const navigate = useNavigate();
+  const { reset } = usePaymentItemStore();
   const formMethods = useForm<{
     payments: Array<Payment>;
   }>({
@@ -18,6 +20,7 @@ const CreateMovimiento = () => {
   });
 
   const goBack = () => {
+    reset();
     navigate("/session");
   };
 
