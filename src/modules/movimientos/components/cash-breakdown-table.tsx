@@ -1,10 +1,4 @@
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/modules/common/components/shadcn/accordion";
-import {
   Table,
   TableBody,
   TableCell,
@@ -79,47 +73,30 @@ const CashBreakdownTable = memo(function ({
     getCoreRowModel: getCoreRowModel(),
   });
   return (
-    <Accordion
-      type="single"
-      collapsible
-      className="hover:cursor-ponter hover:text-decorator-green-300"
-    >
-      <AccordionItem value={`${currency}-table-${index}`}>
-        <AccordionTrigger>Breakdown de denominaciones</AccordionTrigger>
-        <AccordionContent>
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) =>
-                    flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    ),
-                  )}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) =>
+              flexRender(header.column.columnDef.header, header.getContext()),
+            )}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id}>
+            {row.getVisibleCells().map((cell) => {
+              return (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 });
 
