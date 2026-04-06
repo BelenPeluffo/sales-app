@@ -6,7 +6,7 @@ import { Trash2 } from "lucide-react";
 import { Fragment } from "react/jsx-runtime";
 
 const MovimientoForm = () => {
-  const { control } = useFormContext();
+  const { control, trigger, formState } = useFormContext();
   const {
     fields: payments,
     append,
@@ -17,11 +17,8 @@ const MovimientoForm = () => {
   });
   payments.forEach((payment) => console.log("payment", payment));
   const appendItem = () => {
-    // trigger();
-    // console.log("formState.errors", formState.errors);
-    // if (!formState.errors.payments) append({ method: undefined, amount: 0 });
-    append({ method: undefined, amount: 0 });
-    console.log("TRYING 2 APPEND");
+    trigger();
+    if (!formState.errors.payments) append({ method: undefined, amount: 0 });
   };
 
   return (

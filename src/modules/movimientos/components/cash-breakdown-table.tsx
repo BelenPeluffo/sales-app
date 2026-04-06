@@ -13,19 +13,13 @@ import {
 import { currencyDenominations } from "../utils";
 import { memo, useMemo } from "react";
 import { CURRENCIES } from "../constants";
-import { getCashBreakdownTableConfig } from "../configs";
+import { CASH_BREAKDOWN_CONFIG } from "../configs";
 
 const CashBreakdownTable = memo(function ({
-  index,
   currency,
 }: {
-  index: number;
   currency: CURRENCIES;
 }) {
-  const CASH_BREAKDOWN_CONFIG = useMemo(
-    () => getCashBreakdownTableConfig({ index, currency }),
-    [index, currency],
-  );
 
   const currentDenominations = useMemo(
     () =>

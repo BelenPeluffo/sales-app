@@ -1,18 +1,12 @@
 import { memo } from "react";
-import type { CURRENCIES } from "../constants";
 import { Controller, useFormContext } from "react-hook-form";
 import { Input } from "@/modules/common/components/shadcn/input";
+import { usePaymentItemStore } from "../stores";
 
-const CashAmountInput = memo(function ({
-  index,
-  currency,
-  denomination,
-}: {
-  index: number;
-  currency: CURRENCIES;
-  denomination: number;
-}) {
+const CashAmountInput = memo(function ({ denomination }: { denomination: number }) {
   const { control } = useFormContext();
+  const { currency, selectedItem: index } = usePaymentItemStore();
+
   return (
     <Controller
       name={`payments.${index}.cashBreakdown.${currency}.${denomination}.amount`}

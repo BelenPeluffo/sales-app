@@ -3,3 +3,5 @@ export { default as MovimientoForm } from "./movimiento-form";
 export { default as PaymentItem } from "./payment-item";
 export { default as CashBreakdownTable } from "./cash-breakdown-table";
 export { default as CashAmountInput } from "./cash-amount-input";
+export { default as CashSubtotalCell } from "./cash-subtotal-cell";
+export { default as CashDenominationCell } from "./cash-denomination-cell";

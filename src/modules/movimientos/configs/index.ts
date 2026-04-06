@@ -1,1 +1,1 @@
-export { getCashBreakdownTableConfig } from "./crash-breadown-table-config";
+export { CASH_BREAKDOWN_CONFIG } from "./crash-breadown-table-config";
