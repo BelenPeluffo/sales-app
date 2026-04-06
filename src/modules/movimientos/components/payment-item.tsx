@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/modules/common/components/shadcn/select";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { CASH_METHODS, PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
+import { CASH_METHODS, CURRENCIES, PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
 import CashBreakdownTable from "./cash-breakdown-table";
 
@@ -163,7 +163,13 @@ const PaymentItem = ({
         />
       ) : null}
       {paymentType === PAYMENT_METHODS.PESOS_AR ? (
-        <CashBreakdownTable index={index} />
+        <CashBreakdownTable index={index} currency={CURRENCIES.PESOS_AR} />
+      ) : null}
+      {paymentType === PAYMENT_METHODS.DOLLARS ? (
+        <CashBreakdownTable index={index} currency={CURRENCIES.DOLLARS} />
+      ) : null}
+      {paymentType === PAYMENT_METHODS.REAIS ? (
+        <CashBreakdownTable index={index} currency={CURRENCIES.REAIS} />
       ) : null}
     </div>
   );

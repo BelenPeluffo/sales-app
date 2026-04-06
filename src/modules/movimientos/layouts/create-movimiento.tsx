@@ -20,6 +20,10 @@ const CreateMovimiento = () => {
     navigate("/session");
   };
 
+  const saveMovimiento = () => {
+    console.log("valores", formMethods.getValues());
+  };
+
   return (
     <div className="w-full h-full">
       <FormProvider {...formMethods}>
@@ -35,7 +39,10 @@ const CreateMovimiento = () => {
             Cancelar
           </button>
           {/** TODO: vamos a tener que ver cómo hacemos para acceder al trigger del form desde acá. */}
-          <button className="border-black border-1 rounded hover:cursor-pointer bg-green-300 hover:ring-2 hover:ring-green-300 px-5">
+          <button
+            className="border-black border-1 rounded hover:cursor-pointer bg-green-300 hover:ring-2 hover:ring-green-300 px-5"
+            onClick={saveMovimiento}
+          >
             Guardar
           </button>
         </div>

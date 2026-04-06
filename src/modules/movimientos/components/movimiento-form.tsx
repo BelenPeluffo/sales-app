@@ -5,7 +5,7 @@ import { Separator } from "@/modules/common/components/shadcn/separator";
 import { Trash2 } from "lucide-react";
 
 const MovimientoForm = () => {
-  const { control, formState, trigger } = useFormContext();
+  const { control } = useFormContext();
   const {
     fields: payments,
     append,
@@ -14,11 +14,13 @@ const MovimientoForm = () => {
     control,
     name: "payments",
   });
-
+  payments.forEach((payment) => console.log("payment", payment));
   const appendItem = () => {
-    trigger();
-    console.log("formState.errors", formState.errors);
-    if (!formState.errors.payments) append({ method: undefined, amount: 0 });
+    // trigger();
+    // console.log("formState.errors", formState.errors);
+    // if (!formState.errors.payments) append({ method: undefined, amount: 0 });
+    append({ method: undefined, amount: 0 });
+    console.log("TRYING 2 APPEND");
   };
 
   return (
