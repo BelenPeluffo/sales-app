@@ -3,6 +3,7 @@ import { MovimientoForm } from "../components";
 import { FormProvider, useForm } from "react-hook-form";
 import { paymentsSchema, type Payment } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import CreateMovimientoDisplay from "./create-movimiento-display";
 
 const CreateMovimiento = () => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const CreateMovimiento = () => {
       <FormProvider {...formMethods}>
         <div className="flex flex-row gap-2">
           <MovimientoForm />
-          {JSON.stringify(formMethods.getValues())}
+          <CreateMovimientoDisplay />
         </div>
         <div className="flex flex-row justify-end gap-2 px-2 pb-2">
           <button

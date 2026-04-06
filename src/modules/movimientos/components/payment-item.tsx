@@ -13,9 +13,9 @@ import {
   SelectValue,
 } from "@/modules/common/components/shadcn/select";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { CASH_METHODS, CURRENCIES, PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
+import { CASH_METHODS, PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
-import CashBreakdownTable from "./cash-breakdown-table";
+import { usePaymentItemStore } from "../stores";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -40,13 +40,19 @@ const PaymentItem = ({
   index: number;
 }) => {
   const { control } = useFormContext();
+  const { selectItem } = usePaymentItemStore();
   const paymentType = useWatch({
     control,
     name: `payments.${index}.method`,
   });
 
   return (
-    <div className="flex flex-col gap-2">
+    <div
+      className="flex flex-col gap-2"
+      onClick={() => {
+        selectItem(index);
+      }}
+    >
       <div className="flex flex-row gap-2 w-full">
         <Controller
           name={`payments.${index}.method`}
@@ -161,15 +167,6 @@ const PaymentItem = ({
             );
           }}
         />
-      ) : null}
-      {paymentType === PAYMENT_METHODS.PESOS_AR ? (
-        <CashBreakdownTable index={index} currency={CURRENCIES.PESOS_AR} />
-      ) : null}
-      {paymentType === PAYMENT_METHODS.DOLLARS ? (
-        <CashBreakdownTable index={index} currency={CURRENCIES.DOLLARS} />
-      ) : null}
-      {paymentType === PAYMENT_METHODS.REAIS ? (
-        <CashBreakdownTable index={index} currency={CURRENCIES.REAIS} />
       ) : null}
     </div>
   );
