@@ -19,10 +19,12 @@ import {
 import { Input } from "@/modules/common/components/shadcn/input";
 import { Controller, useFormContext } from "react-hook-form";
 import { memo, useMemo } from "react";
-import type { CURRENCIES } from "../constants";
+import { CURRENCIES } from "../constants";
 
 // TODO: obtener ésto desde la API
 const MOCK_DENOMINACION_PESOS_AR = [100, 200, 500, 1000, 5000, 10000, 20000];
+const MOCK_DENOMINACION_DOLLARS = [1, 2, 5, 10, 20, 50, 100];
+const MOCK_DENOMINACION_REAIS = [2, 5, 10, 20, 50, 100, 200];
 
 const CashBreakdownTable = memo(function ({
   index,
@@ -62,10 +64,22 @@ const CashBreakdownTable = memo(function ({
     ],
     [control, index, currency],
   );
+  
+  // TODO: obtener ésto desde la API
+  const currencyDenominations = useMemo(() => {
+    switch (currency) {
+      case CURRENCIES.PESOS_AR:
+        return MOCK_DENOMINACION_PESOS_AR;
+      case CURRENCIES.DOLLARS:
+        return MOCK_DENOMINACION_DOLLARS;
+      case CURRENCIES.REAIS:
+        return MOCK_DENOMINACION_REAIS;
+    }
+  }, [currency]);
 
   const table = useReactTable({
     columns: CASH_BREAKDOWN_CONFIG,
-    data: MOCK_DENOMINACION_PESOS_AR.map((denominacion) => ({
+    data: currencyDenominations.map((denominacion) => ({
       bill: denominacion,
       amount: 0,
       subtotal: 0,

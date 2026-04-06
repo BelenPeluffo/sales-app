@@ -131,7 +131,7 @@ const PaymentItem = ({
           }}
         />
       </div>
-      {paymentType === PAYMENT_METHODS.PESOS_AR ? (
+      {CASH_METHODS.includes(paymentType) ? (
         <Controller
           name={`payments.${index}.transactionType`}
           control={control}

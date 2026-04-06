@@ -32,7 +32,7 @@ const MovimientoForm = () => {
           {payments.map((payment, index) => {
             return (
               <Fragment key={index}>
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row gap-2 hover:bg-gray-100">
                   <PaymentItem item={payment} index={index} key={payment.id} />
                   {payments.length > 1 ? (
                     <button
