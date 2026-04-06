@@ -1,6 +1,5 @@
 export {
-  type CashBreakdownTable,
-  cashBreakdownColumnHelper,
   getFormatedBillDisplay,
-  getCurrencySymbol
+  getCurrencySymbol,
+  currencyDenominations
 } from "./cash-breakdown";

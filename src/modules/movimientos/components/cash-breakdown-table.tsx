@@ -2,7 +2,6 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
   TableHeader,
   TableRow,
 } from "@/modules/common/components/shadcn/table";
@@ -11,20 +10,10 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  cashBreakdownColumnHelper,
-  getCurrencySymbol,
-  getFormatedBillDisplay,
-} from "../utils";
-import { Input } from "@/modules/common/components/shadcn/input";
-import { Controller, useFormContext } from "react-hook-form";
+import { currencyDenominations } from "../utils";
 import { memo, useMemo } from "react";
 import { CURRENCIES } from "../constants";
-
-// TODO: obtener ésto desde la API
-const MOCK_DENOMINACION_PESOS_AR = [100, 200, 500, 1000, 5000, 10000, 20000];
-const MOCK_DENOMINACION_DOLLARS = [1, 2, 5, 10, 20, 50, 100];
-const MOCK_DENOMINACION_REAIS = [2, 5, 10, 20, 50, 100, 200];
+import { getCashBreakdownTableConfig } from "../configs";
 
 const CashBreakdownTable = memo(function ({
   index,
@@ -33,59 +22,27 @@ const CashBreakdownTable = memo(function ({
   index: number;
   currency: CURRENCIES;
 }) {
-  const { control } = useFormContext();
   const CASH_BREAKDOWN_CONFIG = useMemo(
-    () => [
-      cashBreakdownColumnHelper.display({
-        id: "bill",
-        header: () => <TableHead>Denominación</TableHead>,
-        cell: ({ row }) =>
-          `${getCurrencySymbol(currency)} ${getFormatedBillDisplay(row.original.bill)}`,
-      }),
-      cashBreakdownColumnHelper.accessor("amount", {
-        header: () => <TableHead>Cantidad</TableHead>,
-        cell: ({ row }) => (
-          <Controller
-            name={`payments.${index}.cashBreakdown.${currency}.${row.original.bill}.amount`}
-            control={control}
-            render={({ field }) => (
-              <Input {...field} type="number" min={0} key={index} />
-            )}
-          />
-        ),
-      }),
-      cashBreakdownColumnHelper.display({
-        id: "subtotal",
-        header: () => <TableHead>Subtotal</TableHead>,
-        cell: ({ row }) => {
-          return `${getCurrencySymbol(currency)} ${getFormatedBillDisplay(row.original.amount * row.original.bill)}`;
-        },
-      }),
-    ],
-    [control, index, currency],
+    () => getCashBreakdownTableConfig({ index, currency }),
+    [index, currency],
   );
-  
-  // TODO: obtener ésto desde la API
-  const currencyDenominations = useMemo(() => {
-    switch (currency) {
-      case CURRENCIES.PESOS_AR:
-        return MOCK_DENOMINACION_PESOS_AR;
-      case CURRENCIES.DOLLARS:
-        return MOCK_DENOMINACION_DOLLARS;
-      case CURRENCIES.REAIS:
-        return MOCK_DENOMINACION_REAIS;
-    }
-  }, [currency]);
+
+  const currentDenominations = useMemo(
+    () =>
+      currencyDenominations(currency).map((denominacion) => ({
+        bill: denominacion,
+        amount: 0,
+        subtotal: 0,
+      })),
+    [currency],
+  );
 
   const table = useReactTable({
     columns: CASH_BREAKDOWN_CONFIG,
-    data: currencyDenominations.map((denominacion) => ({
-      bill: denominacion,
-      amount: 0,
-      subtotal: 0,
-    })),
+    data: currentDenominations,
     getCoreRowModel: getCoreRowModel(),
   });
+
   return (
     <Table>
       <TableHeader>
