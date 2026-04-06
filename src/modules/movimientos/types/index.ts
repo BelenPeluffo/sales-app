@@ -1,1 +1,7 @@
-export { paymentItemSchema, paymentsSchema, type Payment, type PaymentPartial } from "./payments-schema";
+export {
+  paymentItemSchema,
+  paymentsSchema,
+  type Payment,
+  type PaymentPartial,
+  type CashBreakdown,
+} from "./payments-schema";

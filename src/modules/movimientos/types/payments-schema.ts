@@ -39,16 +39,16 @@ export const paymentItemSchema = zod
       if (formValues.cashBreakdown?.pesosAr?.length === 0) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: "Campo requerido"
-        })
+          message: "Campo requerido",
+        });
       }
     }
     if (formValues.method === PAYMENT_METHODS.DOLLARS) {
       if (formValues.cashBreakdown?.dollars?.length === 0) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: "Campo requerido"
-        })
+          message: "Campo requerido",
+        });
       }
     }
   });
@@ -59,3 +59,4 @@ export const paymentsSchema = zod.object({
 
 export type Payment = zod.infer<typeof paymentItemSchema>;
 export type PaymentPartial = Partial<Payment>;
+export type CashBreakdown = zod.infer<typeof cashSchema>;
