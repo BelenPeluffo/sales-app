@@ -1,0 +1,13 @@
+@reference "../../../index.css";
+
+@layer components {
+  .pesosAr {
+    @apply !pl-12;
+  }
+  .dollars {
+    @apply !pl-12;
+  }
+  .reais {
+    @apply !pl-7;
+  }
+}

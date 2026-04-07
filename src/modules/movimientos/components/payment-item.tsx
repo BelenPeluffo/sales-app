@@ -12,10 +12,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/shadcn/select";
-import { Controller, useFormContext, useWatch, type ControllerRenderProps, type FieldValues } from "react-hook-form";
-import { CASH_METHODS, CURRENCIES, PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
+import {
+  Controller,
+  useFormContext,
+  useWatch,
+  type ControllerRenderProps,
+  type FieldValues,
+} from "react-hook-form";
+import {
+  CASH_METHODS,
+  CURRENCIES,
+  PAYMENT_METHODS,
+  TRANSACTION_TYPES,
+} from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
 import { usePaymentItemStore } from "../stores";
+import { getCurrencySymbol } from "../utils";
+import "../styles/payment-item.css";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -40,16 +53,19 @@ const PaymentItem = ({
   index: number;
 }) => {
   const { control } = useFormContext();
-  const { selectItem, setCurrency } = usePaymentItemStore();
+  const { selectItem, setCurrency, currency } = usePaymentItemStore();
   const paymentType = useWatch({
     control,
     name: `payments.${index}.method`,
   });
 
-  const selectPaymentMethod = (value: string, field: ControllerRenderProps<FieldValues, `payments.${number}.method`>) => {
-    setCurrency(value as CURRENCIES)
-    field.onChange(Number(value))
-  }
+  const selectPaymentMethod = (
+    value: string,
+    field: ControllerRenderProps<FieldValues, `payments.${number}.method`>,
+  ) => {
+    setCurrency(value as CURRENCIES);
+    field.onChange(Number(value));
+  };
 
   return (
     <div
@@ -111,11 +127,11 @@ const PaymentItem = ({
                 <FieldLabel>Monto</FieldLabel>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2">
-                    $
+                    {currency ? getCurrencySymbol(currency) : "AR$"}
                   </span>
                   <Input
                     type="number"
-                    className="pl-7"
+                    className={currency || "pesosAr"}
                     {...field}
                     onChange={(event) =>
                       field.onChange(Number(event.target.value))
