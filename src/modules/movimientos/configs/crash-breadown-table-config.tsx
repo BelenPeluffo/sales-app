@@ -28,6 +28,6 @@ export const CASH_BREAKDOWN_CONFIG = [
   cashBreakdownColumnHelper.display({
     id: "subtotal",
     header: () => <TableHead>Subtotal</TableHead>,
-    cell: () => <CashSubtotalCell />,
+    cell: ({ row }) => <CashSubtotalCell denomination={row.original.bill} />,
   }),
 ];

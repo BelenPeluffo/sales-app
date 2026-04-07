@@ -12,22 +12,21 @@ import {
 } from "@tanstack/react-table";
 import { currencyDenominations } from "../utils";
 import { memo, useMemo } from "react";
-import { CURRENCIES } from "../constants";
 import { CASH_BREAKDOWN_CONFIG } from "../configs";
+import { usePaymentItemStore } from "../stores";
 
-const CashBreakdownTable = memo(function ({
-  currency,
-}: {
-  currency: CURRENCIES;
-}) {
+const CashBreakdownTable = memo(function () {
+  const { currency } = usePaymentItemStore();
 
   const currentDenominations = useMemo(
     () =>
-      currencyDenominations(currency).map((denominacion) => ({
-        bill: denominacion,
-        amount: 0,
-        subtotal: 0,
-      })),
+      currency
+        ? currencyDenominations(currency).map((denominacion) => ({
+            bill: denominacion,
+            amount: 0,
+            subtotal: 0,
+          }))
+        : [],
     [currency],
   );
 

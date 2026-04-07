@@ -1,5 +1,6 @@
 export {
   getFormatedBillDisplay,
   getCurrencySymbol,
-  currencyDenominations
+  currencyDenominations,
+  getCurrencyKey
 } from "./cash-breakdown";

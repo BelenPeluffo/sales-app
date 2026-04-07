@@ -13,7 +13,13 @@ const CreateMovimiento = () => {
     payments: Array<Payment>;
   }>({
     defaultValues: {
-      payments: [{ method: undefined, amount: 0, cashBreakdown: undefined }],
+      payments: [
+        {
+          method: undefined,
+          amount: 0,
+          cashBreakdown: undefined,
+        },
+      ],
     },
     resolver: zodResolver(paymentsSchema),
     mode: "onChange",

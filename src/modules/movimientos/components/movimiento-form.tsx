@@ -15,7 +15,7 @@ const MovimientoForm = () => {
     control,
     name: "payments",
   });
-  payments.forEach((payment) => console.log("payment", payment));
+
   const appendItem = () => {
     trigger();
     if (!formState.errors.payments) append({ method: undefined, amount: 0 });

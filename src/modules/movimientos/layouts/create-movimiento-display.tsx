@@ -1,5 +1,5 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import { CURRENCIES, PAYMENT_METHODS } from "../constants";
+import { CASH_METHODS } from "../constants";
 import { CashBreakdownTable } from "../components";
 import { usePaymentItemStore } from "../stores";
 
@@ -10,24 +10,10 @@ const CreateMovimientoDisplay = () => {
     control,
     name: `payments.${selectedItem}.method`,
   });
-  console.log("selectedItem?", selectedItem);
+
   return selectedItem !== null ? (
     <div>
-      {paymentType === PAYMENT_METHODS.PESOS_AR ? (
-        <CashBreakdownTable
-          index={selectedItem}
-          currency={CURRENCIES.PESOS_AR}
-        />
-      ) : null}
-      {paymentType === PAYMENT_METHODS.DOLLARS ? (
-        <CashBreakdownTable
-          index={selectedItem}
-          currency={CURRENCIES.DOLLARS}
-        />
-      ) : null}
-      {paymentType === PAYMENT_METHODS.REAIS ? (
-        <CashBreakdownTable index={selectedItem} currency={CURRENCIES.REAIS} />
-      ) : null}
+      {CASH_METHODS.includes(paymentType) ? <CashBreakdownTable /> : null}
     </div>
   ) : null;
 };

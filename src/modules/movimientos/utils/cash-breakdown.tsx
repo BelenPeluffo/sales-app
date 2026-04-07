@@ -1,4 +1,5 @@
-import { CURRENCIES } from "../constants";
+import { CURRENCIES, PAYMENT_METHODS } from "../constants";
+import type { CashBreakdown } from "../types";
 
 export const getFormatedBillDisplay = (bill: number) => {
   const isBillAThousand = bill / 1000 >= 1;
@@ -16,6 +17,17 @@ export const getCurrencySymbol = (currency: CURRENCIES) => {
     default:
       return "AR$";
   }
+};
+
+/**
+ * Obtiene el string equivalente en CURRENCIES para el ID de la currency proveniente de API.
+ *
+ * @param {CURRENCIES} currencyId - El ID de la currency proveniente de API.
+ * @returns {CURRENCIES} El string equivalente en CURRENCIES (por ejemplo, "pesosAr").
+ */
+export const getCurrencyKey = (currencyId: CURRENCIES): CURRENCIES => {
+  const currencyKey = String(PAYMENT_METHODS[currencyId as unknown as number]);
+  return CURRENCIES[currencyKey as keyof typeof CURRENCIES];
 };
 
 // TODO: obtener ésto desde la API

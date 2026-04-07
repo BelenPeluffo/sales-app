@@ -24,6 +24,7 @@ export const paymentItemSchema = zod
       .object({
         dollars: zod.array(cashSchema).optional(),
         pesosAr: zod.array(cashSchema).optional(),
+        reais: zod.array(cashSchema).optional(),
       })
       .optional(),
   })

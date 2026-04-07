@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { CURRENCIES } from "../constants";
+import { getCurrencyKey } from "../utils";
 
 export interface PaymentItemState {
   selectedItem: number | null;
@@ -13,6 +14,9 @@ export const usePaymentItemStore = create<PaymentItemState>((set) => ({
   selectedItem: null,
   currency: undefined,
   selectItem: (id) => set({ selectedItem: id }),
-  setCurrency: (currency) => set({ currency }),
+  setCurrency: (currency) => {
+    const currencyKey = getCurrencyKey(currency);
+    set({ currency: currencyKey });
+  },
   reset: () => set({ selectedItem: null }),
 }));
