@@ -52,7 +52,7 @@ const PaymentItem = ({
   item: Record<"id", string>;
   index: number;
 }) => {
-  const { control } = useFormContext();
+  const { control, setValue } = useFormContext();
   const { selectItem, setCurrency, currency } = usePaymentItemStore();
   const paymentType = useWatch({
     control,
@@ -62,7 +62,7 @@ const PaymentItem = ({
     control,
     name: `payments.${index}.cashBreakdown.${currency}`,
   });
-  const currencyTotal = getCurrencyTotal({ currencyState, currency });
+  setValue(`payments.${index}.subtotal`,getCurrencyTotal({ currencyState, currency }));
   const isMontoDisabled = paymentType && CASH_METHODS.includes(paymentType);
 
   const selectPaymentMethod = (
@@ -139,7 +139,6 @@ const PaymentItem = ({
                     type="number"
                     className={currency || "pesosAr"}
                     {...field}
-                    value={isMontoDisabled ? currencyTotal : field.value}
                     onChange={(event) =>
                       field.onChange(Number(event.target.value))
                     }
