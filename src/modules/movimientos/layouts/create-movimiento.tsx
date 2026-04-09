@@ -5,6 +5,7 @@ import { paymentsSchema, type Payment } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CreateMovimientoDisplay from "./create-movimiento-display";
 import { usePaymentItemStore } from "../stores";
+import MovimientoTotal from "./movimiento-total";
 
 const CreateMovimiento = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const CreateMovimiento = () => {
         <div className="flex flex-row gap-2">
           <MovimientoForm />
           <CreateMovimientoDisplay />
+          <MovimientoTotal />
         </div>
         <div className="flex flex-row justify-end gap-2 px-2 pb-2">
           <button
