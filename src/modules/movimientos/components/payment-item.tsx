@@ -27,7 +27,7 @@ import {
 } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
 import { usePaymentItemStore } from "../stores";
-import { getCurrencySymbol, getCurrencyTotal } from "../utils";
+import { getCurrencySymbol } from "../utils";
 import "../styles/payment-item.css";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
@@ -52,17 +52,12 @@ const PaymentItem = ({
   item: Record<"id", string>;
   index: number;
 }) => {
-  const { control, setValue } = useFormContext();
+  const { control } = useFormContext();
   const { selectItem, setCurrency, currency } = usePaymentItemStore();
   const paymentType = useWatch({
     control,
     name: `payments.${index}.method`,
   });
-  const currencyState = useWatch({
-    control,
-    name: `payments.${index}.cashBreakdown.${currency}`,
-  });
-  setValue(`payments.${index}.subtotal`,getCurrencyTotal({ currencyState, currency }));
   const isMontoDisabled = paymentType && CASH_METHODS.includes(paymentType);
 
   const selectPaymentMethod = (

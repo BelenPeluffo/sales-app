@@ -1,7 +1,40 @@
 import { memo } from "react";
-import { Controller, useFormContext } from "react-hook-form";
+import {
+  Controller,
+  useFormContext,
+  useWatch,
+  type ControllerRenderProps,
+} from "react-hook-form";
 import { Input } from "@/modules/common/components/shadcn/input";
 import { usePaymentItemStore } from "../stores";
+
+const CashInput = memo(function ({
+  field,
+  denomination,
+}: {
+  field: ControllerRenderProps;
+  denomination: number;
+}) {
+  const { control, setValue } = useFormContext();
+  const { selectedItem: index } = usePaymentItemStore();
+  const subtotal = useWatch({
+    control,
+    name: `payments.${index}.subtotal`,
+  });
+
+  return (
+    <Input
+      {...field}
+      onChange={(event) => {
+        const billsValue = Number(event.target.value) * Number(denomination);
+        field.onChange(Number(event.target.value));
+        setValue(`payments.${index}.subtotal`, subtotal + billsValue);
+      }}
+      type="number"
+      min={0}
+    />
+  );
+});
 
 const CashAmountInput = memo(function ({
   denomination,
@@ -17,14 +50,7 @@ const CashAmountInput = memo(function ({
       control={control}
       defaultValue={0}
       render={({ field }) => {
-        return (
-          <Input
-            {...field}
-            onChange={(event) => field.onChange(Number(event.target.value))}
-            type="number"
-            min={0}
-          />
-        );
+        return <CashInput field={field} denomination={denomination} />;
       }}
     />
   );
