@@ -7,6 +7,7 @@ import {
   TableRow,
 } from "@/modules/common/components/shadcn/table";
 import { CreateMovimientoButton } from "@/modules/movimientos";
+import { TotalTransactionsBreakdown } from "../components";
 
 const MOCK_MOVIMIENTOS = [
   {
@@ -31,27 +32,32 @@ const Session = () => {
           </button>
         </div>
       </div>
-      <Table>
-        {/** TODO: implementar gestión de tabla con react-query */}
-        <TableHeader>
-          <TableRow>
-            <TableHead>Hora</TableHead>
-            <TableHead>Monto total</TableHead>
-            <TableHead>Acciones</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {MOCK_MOVIMIENTOS.map((movimiento) => {
-            return (
-              <TableRow>
-                <TableCell>{movimiento.time}</TableCell>
-                <TableCell>ARS $ {movimiento.total}</TableCell>
-                <TableCell>Acciones</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <div className="flex flex-row gap-10">
+        <Table>
+          {/** TODO: implementar gestión de tabla con react-query */}
+          <TableHeader>
+            <TableRow>
+              <TableHead>Hora</TableHead>
+              <TableHead>Monto total</TableHead>
+              <TableHead>Acciones</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {MOCK_MOVIMIENTOS.map((movimiento) => {
+              return (
+                <TableRow>
+                  <TableCell>{movimiento.time}</TableCell>
+                  <TableCell>ARS $ {movimiento.total}</TableCell>
+                  <TableCell>Acciones</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <div className="w-[40%]">
+          <TotalTransactionsBreakdown />
+        </div>
+      </div>
     </>
   );
 };
