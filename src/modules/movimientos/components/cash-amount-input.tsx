@@ -8,6 +8,11 @@ import {
 import { Input } from "@/modules/common/components/shadcn/input";
 import { usePaymentItemStore } from "../stores";
 import { TRANSACTION_TYPES } from "../constants";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/modules/common/components/shadcn/tooltip";
 
 const CashInput = memo(function ({
   field,
@@ -30,24 +35,35 @@ const CashInput = memo(function ({
     control,
     name: "total",
   });
+  const isTransactionUndefined = transactionType === undefined;
 
   return (
-    <Input
-      {...field}
-      disabled={transactionType === null}
-      onChange={(event) => {
-        const billsValue = Number(event.target.value) * Number(denomination);
-        const newTotal =
-          transactionType === TRANSACTION_TYPES.IN
-            ? total + billsValue
-            : total - billsValue;
-        field.onChange(Number(event.target.value));
-        setValue(`payments.${index}.subtotal`, subtotal + billsValue);
-        setValue("total", newTotal);
-      }}
-      type="number"
-      min={0}
-    />
+    <Tooltip>
+      <TooltipTrigger>
+        <Input
+          {...field}
+          disabled={isTransactionUndefined}
+          onChange={(event) => {
+            const billsValue =
+              Number(event.target.value) * Number(denomination);
+            const newTotal =
+              transactionType === TRANSACTION_TYPES.IN
+                ? total + billsValue
+                : total - billsValue;
+            field.onChange(Number(event.target.value));
+            setValue(`payments.${index}.subtotal`, subtotal + billsValue);
+            setValue("total", newTotal);
+          }}
+          type="number"
+          min={0}
+        />
+      </TooltipTrigger>
+      {isTransactionUndefined ? (
+        <TooltipContent side={"right"}>
+          Defina el tipo de transacción para editar
+        </TooltipContent>
+      ) : null}
+    </Tooltip>
   );
 });
 
