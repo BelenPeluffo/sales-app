@@ -1,15 +1,11 @@
 import { useFormContext, useWatch } from "react-hook-form";
-import type { Payment } from "../types";
 
 const MovimientoTotal = () => {
   const { control } = useFormContext();
-  const payments = useWatch({
+  const grandTotal: number = useWatch({
     control,
-    name: `payments`,
+    name: `total`,
   });
-  const grandTotal = payments.reduce((total: number, payment: Payment) => {
-    return total + payment.subtotal;
-  }, 0);
   return <div>Total: {grandTotal}</div>;
 };
 

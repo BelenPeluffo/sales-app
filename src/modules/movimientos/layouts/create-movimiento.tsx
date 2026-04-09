@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { MovimientoForm } from "../components";
 import { FormProvider, useForm } from "react-hook-form";
-import { paymentsSchema, type Payment } from "../types";
+import { paymentsSchema, type Payments } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CreateMovimientoDisplay from "./create-movimiento-display";
 import { usePaymentItemStore } from "../stores";
@@ -10,9 +10,7 @@ import MovimientoTotal from "./movimiento-total";
 const CreateMovimiento = () => {
   const navigate = useNavigate();
   const { reset } = usePaymentItemStore();
-  const formMethods = useForm<{
-    payments: Array<Payment>;
-  }>({
+  const formMethods = useForm<Payments>({
     defaultValues: {
       payments: [
         {
@@ -21,6 +19,7 @@ const CreateMovimiento = () => {
           cashBreakdown: undefined,
         },
       ],
+      total: 0,
     },
     resolver: zodResolver(paymentsSchema),
     mode: "onChange",

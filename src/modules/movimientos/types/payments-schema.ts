@@ -56,8 +56,10 @@ export const paymentItemSchema = zod
 
 export const paymentsSchema = zod.object({
   payments: zod.array(paymentItemSchema).min(1),
+  total: zod.number(),
 });
 
 export type Payment = zod.infer<typeof paymentItemSchema>;
+export type Payments = zod.infer<typeof paymentsSchema>;
 export type PaymentPartial = Partial<Payment>;
 export type CashBreakdown = zod.infer<typeof cashSchema>;

@@ -7,6 +7,7 @@ import {
 } from "react-hook-form";
 import { Input } from "@/modules/common/components/shadcn/input";
 import { usePaymentItemStore } from "../stores";
+import { TRANSACTION_TYPES } from "../constants";
 
 const CashInput = memo(function ({
   field,
@@ -21,14 +22,28 @@ const CashInput = memo(function ({
     control,
     name: `payments.${index}.subtotal`,
   });
+  const transactionType = useWatch({
+    control,
+    name: `payments.${index}.transactionType`,
+  });
+  const total = useWatch({
+    control,
+    name: "total",
+  });
 
   return (
     <Input
       {...field}
+      disabled={transactionType === null}
       onChange={(event) => {
         const billsValue = Number(event.target.value) * Number(denomination);
+        const newTotal =
+          transactionType === TRANSACTION_TYPES.IN
+            ? total + billsValue
+            : total - billsValue;
         field.onChange(Number(event.target.value));
         setValue(`payments.${index}.subtotal`, subtotal + billsValue);
+        setValue("total", newTotal);
       }}
       type="number"
       min={0}
