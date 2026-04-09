@@ -18,7 +18,7 @@ const MovimientoForm = () => {
 
   const appendItem = () => {
     trigger();
-    if (!formState.errors.payments) append({ method: undefined, amount: 0 });
+    if (!formState.errors.payments) append({ method: undefined, subtotal: 0 });
   };
 
   return (

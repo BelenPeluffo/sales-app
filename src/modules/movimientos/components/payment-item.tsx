@@ -125,7 +125,7 @@ const PaymentItem = ({
           }}
         />
         <Controller
-          name={`payments.${index}.amount`}
+          name={`payments.${index}.subtotal`}
           control={control}
           render={({ field, fieldState }) => {
             return (

@@ -15,7 +15,7 @@ export const paymentItemSchema = zod
         message: "Campo requerido",
       }),
     transactionType: zod.enum(TRANSACTION_TYPES).optional(),
-    amount: zod
+    subtotal: zod
       .number()
       .transform((value) => (value ? Number(value) : 0))
       .nonoptional()

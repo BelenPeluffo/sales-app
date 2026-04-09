@@ -16,7 +16,7 @@ const CreateMovimiento = () => {
       payments: [
         {
           method: undefined,
-          amount: 0,
+          subtotal: 0,
           cashBreakdown: undefined,
         },
       ],
