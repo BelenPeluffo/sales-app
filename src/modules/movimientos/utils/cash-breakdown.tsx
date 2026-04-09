@@ -1,5 +1,4 @@
 import { CURRENCIES, PAYMENT_METHODS } from "../constants";
-import type { CashBreakdown } from "../types";
 
 export const getFormatedBillDisplay = (bill: number) => {
   const isBillAThousand = bill / 1000 >= 1;
@@ -17,6 +16,46 @@ export const getCurrencySymbol = (currency: CURRENCIES) => {
     default:
       return "AR$";
   }
+};
+
+/**
+ * Calcula el total de una moneda según las denominaciones y cantidades
+ * que se le pasen en el objeto currencyState.
+ *
+ * @param {Object} currencyState - Un objeto que contiene las denominaciones
+ *                           y cantidades de cada una.
+ * @param {CURRENCIES} [currency] - La moneda para la que se calculará el total.
+ * @returns {number} El total de la moneda.
+ */
+export const getCurrencyTotal = ({
+  currencyState,
+  // TODO: por aquí luego se pasará sólo el array de denominaciones, por lo que la propiedad pasará a llamarse "denominations"
+  currency,
+}: {
+  currencyState?: Record<number, { amount: number }>;
+  currency?: CURRENCIES;
+}) => {
+  if (!currency || !currencyState) return;
+  // TODO: cuando obtengamos las denominaciones desde API, esta variable no se usará más y pasaremos directo a definedDenominations
+  const denominations = currencyDenominations(currency);
+  const definedDenominations = Object.keys(currencyState).filter(
+    (denomination) => {
+      const billsAmount = currencyState[Number(denomination)]?.amount;
+      return (
+        billsAmount &&
+        billsAmount > 0 &&
+        denominations.includes(Number(denomination))
+      );
+    },
+  );
+
+  const currencyTotal = definedDenominations.reduce((total, denomination) => {
+    const denominationSubtotal =
+      currencyState[Number(denomination)].amount * Number(denomination);
+    return total + denominationSubtotal;
+  }, 0);
+
+  return currencyTotal;
 };
 
 /**
