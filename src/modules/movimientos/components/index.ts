@@ -8,3 +8,4 @@ export { default as CashDenominationCell } from "./cash-denomination-cell";
 export { default as PaymentMethodSelect } from "./payment-method-select";
 export { default as MontoInput } from "./monto-input";
 export { default as TransactionTypeSelect } from "./transaction-type-select";
+export { default as PaymentItemDetail } from "./payment-item-detail";

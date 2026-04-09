@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { MovimientoForm } from "../components";
+import { MovimientoForm, PaymentItemDetail } from "../components";
 import { FormProvider, useForm } from "react-hook-form";
 import { paymentsSchema, type Payments } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +40,10 @@ const CreateMovimiento = () => {
         <div className="flex flex-row gap-2">
           <MovimientoForm />
           <CreateMovimientoDisplay />
-          <MovimientoTotal />
+          <div className="flex-col gap-2">
+            <PaymentItemDetail />
+            <MovimientoTotal />
+          </div>
         </div>
         <div className="flex flex-row justify-end gap-2 px-2 pb-2">
           <button

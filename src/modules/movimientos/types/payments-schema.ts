@@ -27,6 +27,7 @@ export const paymentItemSchema = zod
         reais: zod.array(cashSchema).optional(),
       })
       .optional(),
+    details: zod.string().optional(),
   })
   .superRefine((formValues, context) => {
     if (formValues.method === PAYMENT_METHODS.PESOS_AR) {
