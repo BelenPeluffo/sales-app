@@ -5,3 +5,4 @@ export { default as CashBreakdownTable } from "./cash-breakdown-table";
 export { default as CashAmountInput } from "./cash-amount-input";
 export { default as CashSubtotalCell } from "./cash-subtotal-cell";
 export { default as CashDenominationCell } from "./cash-denomination-cell";
+export { default as PaymentMethodSelect } from "./payment-method-select";

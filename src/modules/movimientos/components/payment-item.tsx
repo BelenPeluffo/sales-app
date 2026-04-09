@@ -12,48 +12,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/modules/common/components/shadcn/select";
-import {
-  Controller,
-  useFormContext,
-  useWatch,
-  type ControllerRenderProps,
-  type FieldValues,
-} from "react-hook-form";
-import {
-  CASH_METHODS,
-  CURRENCIES,
-  PAYMENT_METHODS,
-  TRANSACTION_TYPES,
-} from "../constants";
+import { Controller, useFormContext, useWatch } from "react-hook-form";
+import { CASH_METHODS, TRANSACTION_TYPES } from "../constants";
 import { Input } from "@/modules/common/components/shadcn/input";
 import { usePaymentItemStore } from "../stores";
 import { getCurrencySymbol } from "../utils";
 import "../styles/payment-item.css";
+import PaymentMethodSelect from "./payment-method-select";
+import type { PaymentItem } from "../types";
 
-// TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
-/*
-*CONSULTA: ¿Cuál es la mejor práctica con respecto a usar datos desde API para condicionar lógica en el FE?
-- ¿Usar los IDs guardándolos en una store, por ejemplo?
-- ¿O recurriendo a los strings?
-Quizás guardarlos en store en caso de que se necesite saber su valor en más de un lugar.
-*/
-const MOCK_PAYMENT_METHODS = [
-  { name: "Visa electrón", value: PAYMENT_METHODS.VISA_ELECTRON },
-  { name: "Maestro", value: PAYMENT_METHODS.MAESTRO },
-  { name: "US$ Dólares", value: PAYMENT_METHODS.DOLLARS },
-  { name: "R Reales", value: PAYMENT_METHODS.REAIS },
-  { name: "AR$ Pesos Argentinos", value: PAYMENT_METHODS.PESOS_AR },
-];
-
-const PaymentItem = ({
-  item,
-  index,
-}: {
-  item: Record<"id", string>;
-  index: number;
-}) => {
+const PaymentItem = ({ item, index }: PaymentItem) => {
   const { control, setValue } = useFormContext();
-  const { selectItem, setCurrency, currency } = usePaymentItemStore();
+  const { selectItem, currency } = usePaymentItemStore();
   const paymentType = useWatch({
     control,
     name: `payments.${index}.method`,
@@ -64,14 +34,6 @@ const PaymentItem = ({
   });
   const isMontoDisabled = paymentType && CASH_METHODS.includes(paymentType);
 
-  const selectPaymentMethod = (
-    value: string,
-    field: ControllerRenderProps<FieldValues, `payments.${number}.method`>,
-  ) => {
-    setCurrency(value as CURRENCIES);
-    field.onChange(Number(value));
-  };
-
   return (
     <div
       className="flex flex-col gap-2"
@@ -80,49 +42,7 @@ const PaymentItem = ({
       }}
     >
       <div className="flex flex-row gap-2 w-full">
-        <Controller
-          name={`payments.${index}.method`}
-          control={control}
-          render={({ field, fieldState }) => {
-            return (
-              <Field className="w-[60%]" data-invalid={fieldState.invalid}>
-                <FieldLabel>Método de pago</FieldLabel>
-                <Select
-                  {...field}
-                  value={field.value?.toString()}
-                  key={item.id}
-                  onValueChange={(value) => selectPaymentMethod(value, field)}
-                >
-                  <SelectTrigger
-                    aria-invalid={fieldState.invalid}
-                    onPointerDownCapture={() => selectItem(index)}
-                  >
-                    <SelectValue placeholder="Seleccione método de pago" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Método de pago</SelectLabel>
-                      {MOCK_PAYMENT_METHODS.map((method) => (
-                        <SelectItem
-                          value={method.value?.toString()}
-                          key={method.value}
-                        >
-                          {method.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                {fieldState.invalid ? (
-                  <FieldError
-                    errors={[fieldState.error]}
-                    className="text-end"
-                  />
-                ) : null}
-              </Field>
-            );
-          }}
-        />
+        <PaymentMethodSelect {...{ item, index }} />
         <Controller
           name={`payments.${index}.subtotal`}
           control={control}
