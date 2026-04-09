@@ -34,7 +34,12 @@ const MovimientoForm = () => {
                   {payments.length > 1 ? (
                     <button
                       className="text-green-300 hover:cursor-pointer hover:text-red-400 w-[10%]"
-                      onClick={() => remove(index)}
+                      onClick={() => {
+                        // TODO: necesario implementar lógica para "revertir" los cambios implementados por el ítem
+                        // setValue(`total`, `payments.${index}.subtotal`);
+                        // setValue(`payments.${index}.subtotal`, 0);
+                        remove(index);
+                      }}
                     >
                       <Trash2 className="justify-center" size={25} />
                     </button>
