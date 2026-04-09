@@ -6,4 +6,4 @@ export {
   type CashBreakdown,
   type Payments,
 } from "./payments-schema";
-export { type PaymentItem } from "./payment-item";
+export { type PaymentItemType } from "./payment-item";

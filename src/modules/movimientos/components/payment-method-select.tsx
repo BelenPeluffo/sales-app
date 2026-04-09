@@ -20,7 +20,7 @@ import {
 } from "react-hook-form";
 import { PAYMENT_METHODS, type CURRENCIES } from "../constants";
 import { usePaymentItemStore } from "../stores";
-import type { PaymentItem } from "../types";
+import type { PaymentItemType } from "../types";
 
 // TODO: Implementar servicio para obtenerlos desde API & Crear file de constantes donde los IDs queden guardados*
 /*
@@ -37,7 +37,7 @@ const MOCK_PAYMENT_METHODS = [
   { name: "AR$ Pesos Argentinos", value: PAYMENT_METHODS.PESOS_AR },
 ];
 
-const PaymentMethodSelect = ({ item, index }: PaymentItem) => {
+const PaymentMethodSelect = ({ item, index }: PaymentItemType) => {
   const { control } = useFormContext();
   const { selectItem, setCurrency } = usePaymentItemStore();
 
