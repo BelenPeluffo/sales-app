@@ -19,10 +19,13 @@ const MOCK_MOVIMIENTOS = [
   {
     time: "10:50",
     amount: 35760,
+    income: { amount: 35760, usesForeignCurrency: true },
   },
   {
     time: "11:50",
     amount: 30760,
+    income: { amount: 30800 },
+    expense: { amount: 40 },
     details: "khe",
   },
 ];

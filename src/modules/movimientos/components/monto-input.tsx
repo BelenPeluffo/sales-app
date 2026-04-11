@@ -14,12 +14,11 @@ import {
 } from "@/modules/common/components/shadcn/tooltip";
 import { MoneyInput } from "@/modules/common";
 import { useCierreStore } from "@/modules/cierres";
-import { useCallback } from "react";
 
 const MontoInput = ({ index }: Pick<PaymentItemType, "index">) => {
   const { control, setValue } = useFormContext();
   const { currency } = usePaymentItemStore();
-  const { exchangeRates } = useCierreStore();
+  const { getCurrencyConversion } = useCierreStore();
   const paymentType = useWatch({
     control,
     name: `payments.${index}.method`,
@@ -33,16 +32,6 @@ const MontoInput = ({ index }: Pick<PaymentItemType, "index">) => {
     isMethodCash && paymentType !== PAYMENT_METHODS.PESOS_AR;
   const isMethodUndefined = !paymentType;
   const isMontoDisabled = isMethodUndefined || isMethodCash;
-
-  const getCurrencyConversion = useCallback(
-    (amount: number, currency: PAYMENT_METHODS) => {
-      if (currency === PAYMENT_METHODS.DOLLARS)
-        return amount * exchangeRates.dollars;
-      if (currency === PAYMENT_METHODS.REAIS)
-        return amount * exchangeRates.reais;
-    },
-    [exchangeRates],
-  );
 
   return (
     <Controller
@@ -75,8 +64,7 @@ const MontoInput = ({ index }: Pick<PaymentItemType, "index">) => {
                 <TooltipContent>
                   Equivale a ARS $
                   {getCurrencyConversion(field.value, paymentType)} según
-                  cotización del día de hoy (USD $1 = ARS $
-                  {exchangeRates.dollars}).
+                  cotización del día de hoy.
                 </TooltipContent>
               ) : null}
             </Tooltip>
