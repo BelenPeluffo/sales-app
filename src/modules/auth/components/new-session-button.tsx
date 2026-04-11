@@ -33,19 +33,14 @@ const NewSessionButton = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const logout = () => {
+    // TODO: implementar request a servicio de logout
     setUser(null);
   };
 
   const initSession: SubmitHandler<NewCierre> = (data) => {
-    // TODO: usar react-query para obtener los valores definidos en el formulario
+    // TODO: implementar request a servicio de creación de cierre
     console.log("initSession FORM DATA", data);
-    abrirCierre({
-      initialAmount: 3000,
-      exchangeRates: {
-        dollars: 1500,
-        reais: 500,
-      },
-    });
+    abrirCierre(data);
     setOpenDialog(false);
     navigate("/session");
   };
