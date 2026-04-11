@@ -12,14 +12,22 @@ import {
 import { useState } from "react";
 import {
   Field,
+  FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/modules/common/components/shadcn/field";
 import { Input } from "@/modules/common/components/shadcn/input";
 import { useNavigate } from "react-router-dom";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { newCierreSchema, type NewCierre } from "../types";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const NewSessionButton = () => {
   const navigate = useNavigate();
+  const { control, handleSubmit } = useForm<NewCierre>({
+    resolver: zodResolver(newCierreSchema),
+    mode: "onChange",
+  });
   const { setUser } = useUserStore();
   const { abrirCierre } = useCierreStore();
   const [openDialog, setOpenDialog] = useState(false);
@@ -28,15 +36,18 @@ const NewSessionButton = () => {
     setUser(null);
   };
 
-  const initSession = () => {
+  const initSession: SubmitHandler<NewCierre> = (data) => {
     // TODO: usar react-query para obtener los valores definidos en el formulario
+    console.log("initSession FORM DATA", data);
     abrirCierre({
       initialAmount: 3000,
-      dolarExchangeRate: 1500,
-      reaisExchangeRate: 500,
+      exchangeRates: {
+        dollars: 1500,
+        reais: 500,
+      },
     });
     setOpenDialog(false);
-    navigate('/session');
+    navigate("/session");
   };
 
   return (
@@ -60,35 +71,102 @@ const NewSessionButton = () => {
           <DialogHeader>
             <DialogTitle>Abrir cierre</DialogTitle>
           </DialogHeader>
-          <form action="">
+          <form onSubmit={handleSubmit(initSession)}>
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="monto-inicial">Monto inicial</FieldLabel>
-                <Input id="monto-inicial" type="number" min={0} required />
+                <Controller
+                  name="initialAmount"
+                  {...{ control }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Input
+                        {...field}
+                        onChange={(event) =>
+                          field.onChange(Number(event.target.value))
+                        }
+                        id="monto-inicial"
+                        type="number"
+                        min={0}
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid ? (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-end"
+                        />
+                      ) : null}
+                    </>
+                  )}
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="us-dollars">Cotización Dolares</FieldLabel>
-                <Input id="us-dollars" type="number" />
+                <Controller
+                  name="exchangeRates.dollars"
+                  {...{ control }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Input
+                        {...field}
+                        onChange={(event) =>
+                          field.onChange(Number(event.target.value))
+                        }
+                        id="us-dollars"
+                        type="number"
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid ? (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-end"
+                        />
+                      ) : null}
+                    </>
+                  )}
+                />
               </Field>
               <Field>
                 <FieldLabel htmlFor="reais">Cotización Reales</FieldLabel>
-                <Input id="reais" type="number" />
+                <Controller
+                  name="exchangeRates.reais"
+                  {...{ control }}
+                  render={({ field, fieldState }) => (
+                    <>
+                      <Input
+                        {...field}
+                        onChange={(event) =>
+                          field.onChange(Number(event.target.value))
+                        }
+                        id="reais"
+                        type="number"
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid ? (
+                        <FieldError
+                          errors={[fieldState.error]}
+                          className="text-end"
+                        />
+                      ) : null}
+                    </>
+                  )}
+                />
               </Field>
             </FieldGroup>
-          </form>
-          <DialogFooter>
-            <DialogClose asChild>
-              <button className="!border-black border-1 rounded w-[25%] hover:cursor-pointer hover:bg-green-300">
-                Cancelar
+            <DialogFooter>
+              <DialogClose asChild>
+                <button className="!border-black border-1 rounded w-[25%] hover:cursor-pointer hover:bg-green-300">
+                  Cancelar
+                </button>
+              </DialogClose>
+              <button
+                className="border-black border-1 rounded w-[25%] hover:cursor-pointer bg-green-300 hover:ring-2 hover:ring-green-300"
+                type="submit"
+              >
+                Ingresar
               </button>
-            </DialogClose>
-            <button
-              className="border-black border-1 rounded w-[25%] hover:cursor-pointer bg-green-300 hover:ring-2 hover:ring-green-300"
-              onClick={initSession}
-            >
-              Ingresar
-            </button>
-          </DialogFooter>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </div>
