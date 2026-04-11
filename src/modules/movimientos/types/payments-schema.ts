@@ -1,5 +1,8 @@
 import * as zod from "zod";
 import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
+import { VALIDATION_MESSAGES } from "@/modules/common";
+
+const { REQUIRED_FIELD } = VALIDATION_MESSAGES;
 
 const cashSchema = zod.object({
   bill: zod.number(),
@@ -12,14 +15,14 @@ export const paymentItemSchema = zod
       .enum(PAYMENT_METHODS)
       .optional()
       .refine((value) => value !== undefined && value !== null, {
-        message: "Campo requerido",
+        message: REQUIRED_FIELD,
       }),
     transactionType: zod.enum(TRANSACTION_TYPES).optional(),
     subtotal: zod
       .number()
       .transform((value) => (value ? Number(value) : 0))
       .nonoptional()
-      .refine((value) => value > 0, { message: "Campo requerido" }),
+      .refine((value) => value > 0, { message: REQUIRED_FIELD }),
     cashBreakdown: zod
       .object({
         dollars: zod.array(cashSchema).optional(),
@@ -34,14 +37,14 @@ export const paymentItemSchema = zod
       if (!formValues.transactionType) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: "Campo requerido",
+          message: REQUIRED_FIELD,
           path: ["transactionType"],
         });
       }
       if (formValues.cashBreakdown?.pesosAr?.length === 0) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: "Campo requerido",
+          message: REQUIRED_FIELD,
         });
       }
     }
@@ -49,7 +52,7 @@ export const paymentItemSchema = zod
       if (formValues.cashBreakdown?.dollars?.length === 0) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: "Campo requerido",
+          message: REQUIRED_FIELD,
         });
       }
     }
