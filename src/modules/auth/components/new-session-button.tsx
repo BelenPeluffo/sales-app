@@ -16,15 +16,15 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/modules/common/components/shadcn/field";
-import { Input } from "@/modules/common/components/shadcn/input";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { newCierreSchema, type NewCierre } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { MoneyInput } from "@/modules/common";
 
 const NewSessionButton = () => {
   const navigate = useNavigate();
-  const { control, handleSubmit } = useForm<NewCierre>({
+  const { control, handleSubmit, reset } = useForm<NewCierre>({
     resolver: zodResolver(newCierreSchema),
     mode: "onChange",
   });
@@ -80,7 +80,7 @@ const NewSessionButton = () => {
                   {...{ control }}
                   render={({ field, fieldState }) => (
                     <>
-                      <Input
+                      <MoneyInput
                         {...field}
                         onChange={(event) =>
                           field.onChange(Number(event.target.value))
@@ -89,6 +89,7 @@ const NewSessionButton = () => {
                         type="number"
                         min={0}
                         aria-invalid={fieldState.invalid}
+                        placeholder="¿Con cuántos pesos se abre la caja hoy?"
                       />
                       {fieldState.invalid ? (
                         <FieldError
@@ -101,13 +102,13 @@ const NewSessionButton = () => {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="us-dollars">Cotización Dolares</FieldLabel>
+                <FieldLabel htmlFor="us-dollars">Cotización USD</FieldLabel>
                 <Controller
                   name="exchangeRates.dollars"
                   {...{ control }}
                   render={({ field, fieldState }) => (
                     <>
-                      <Input
+                      <MoneyInput
                         {...field}
                         onChange={(event) =>
                           field.onChange(Number(event.target.value))
@@ -115,6 +116,7 @@ const NewSessionButton = () => {
                         id="us-dollars"
                         type="number"
                         aria-invalid={fieldState.invalid}
+                        placeholder="¿A cuántos pesos equivale un dólar hoy?"
                       />
                       {fieldState.invalid ? (
                         <FieldError
@@ -127,13 +129,13 @@ const NewSessionButton = () => {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="reais">Cotización Reales</FieldLabel>
+                <FieldLabel htmlFor="reais">Cotización reales</FieldLabel>
                 <Controller
                   name="exchangeRates.reais"
                   {...{ control }}
                   render={({ field, fieldState }) => (
                     <>
-                      <Input
+                      <MoneyInput
                         {...field}
                         onChange={(event) =>
                           field.onChange(Number(event.target.value))
@@ -141,6 +143,7 @@ const NewSessionButton = () => {
                         id="reais"
                         type="number"
                         aria-invalid={fieldState.invalid}
+                        placeholder="¿A cuántos pesos equivale un real hoy?"
                       />
                       {fieldState.invalid ? (
                         <FieldError
@@ -155,7 +158,10 @@ const NewSessionButton = () => {
             </FieldGroup>
             <DialogFooter>
               <DialogClose asChild>
-                <button className="!border-black border-1 rounded w-[25%] hover:cursor-pointer hover:bg-green-300">
+                <button
+                  className="!border-black border-1 rounded w-[25%] hover:cursor-pointer hover:bg-green-300"
+                  onClick={() => reset()}
+                >
                   Cancelar
                 </button>
               </DialogClose>
