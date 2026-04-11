@@ -8,19 +8,31 @@ import {
 } from "@/modules/common/components/shadcn/table";
 import { CreateMovimientoButton } from "@/modules/movimientos";
 import { TotalTransactionsBreakdown } from "../components";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { TRANSACTION_LIST_TABLE_CONFIG } from "../configs";
 
 const MOCK_MOVIMIENTOS = [
   {
     time: "10:50",
-    total: 35760,
+    amount: 35760,
   },
   {
     time: "11:50",
-    total: 30760,
+    amount: 30760,
+    details: "khe",
   },
 ];
 
 const Session = () => {
+  const table = useReactTable({
+    columns: TRANSACTION_LIST_TABLE_CONFIG,
+    data: MOCK_MOVIMIENTOS,
+    getCoreRowModel: getCoreRowModel(),
+  });
   return (
     <>
       <div className="flex flex-row flex-wrap justify-between mt-6 mb-3 w-full content-center">
@@ -34,24 +46,32 @@ const Session = () => {
       </div>
       <div className="flex flex-row gap-10">
         <Table>
-          {/** TODO: implementar gestión de tabla con react-query */}
           <TableHeader>
-            <TableRow>
-              <TableHead>Hora</TableHead>
-              <TableHead>Monto total</TableHead>
-              <TableHead>Acciones</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {MOCK_MOVIMIENTOS.map((movimiento) => {
+            {table.getHeaderGroups().map((headerGroup) => {
               return (
-                <TableRow>
-                  <TableCell>{movimiento.time}</TableCell>
-                  <TableCell>ARS $ {movimiento.total}</TableCell>
-                  <TableCell>Acciones</TableCell>
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </TableHead>
+                  ))}
                 </TableRow>
               );
             })}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <div className="w-[40%]">
