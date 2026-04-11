@@ -2,8 +2,6 @@ import * as zod from "zod";
 import { PAYMENT_METHODS, TRANSACTION_TYPES } from "../constants";
 import { VALIDATION_MESSAGES } from "@/modules/common";
 
-const { REQUIRED_FIELD } = VALIDATION_MESSAGES;
-
 const cashSchema = zod.object({
   bill: zod.number(),
   amount: zod.number(),
@@ -11,18 +9,12 @@ const cashSchema = zod.object({
 
 export const paymentItemSchema = zod
   .object({
-    method: zod
-      .enum(PAYMENT_METHODS)
-      .optional()
-      .refine((value) => value !== undefined && value !== null, {
-        message: REQUIRED_FIELD,
-      }),
+    method: zod.enum(PAYMENT_METHODS).optional(),
     transactionType: zod.enum(TRANSACTION_TYPES).optional(),
     subtotal: zod
       .number()
       .transform((value) => (value ? Number(value) : 0))
-      .nonoptional()
-      .refine((value) => value > 0, { message: REQUIRED_FIELD }),
+      .nonoptional(),
     cashBreakdown: zod
       .object({
         dollars: zod.array(cashSchema).optional(),
@@ -33,18 +25,34 @@ export const paymentItemSchema = zod
     details: zod.string().optional(),
   })
   .superRefine((formValues, context) => {
+    if (formValues.method === undefined || formValues.method === null) {
+      context.addIssue({
+        code: zod.ZodIssueCode.invalid_value,
+        message: VALIDATION_MESSAGES.REQUIRED_FIELD,
+        path: ["method"],
+        values: [],
+      });
+    }
+    if (formValues.subtotal <= 0) {
+      context.addIssue({
+        code: zod.ZodIssueCode.invalid_value,
+        message: VALIDATION_MESSAGES.REQUIRED_FIELD,
+        path: ["subtotal"],
+        values: [],
+      });
+    }
     if (formValues.method === PAYMENT_METHODS.PESOS_AR) {
       if (!formValues.transactionType) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: REQUIRED_FIELD,
+          message: VALIDATION_MESSAGES.REQUIRED_FIELD,
           path: ["transactionType"],
         });
       }
       if (formValues.cashBreakdown?.pesosAr?.length === 0) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: REQUIRED_FIELD,
+          message: VALIDATION_MESSAGES.REQUIRED_FIELD,
         });
       }
     }
@@ -52,7 +60,7 @@ export const paymentItemSchema = zod
       if (formValues.cashBreakdown?.dollars?.length === 0) {
         context.addIssue({
           code: zod.ZodIssueCode.custom,
-          message: REQUIRED_FIELD,
+          message: VALIDATION_MESSAGES.REQUIRED_FIELD,
         });
       }
     }
